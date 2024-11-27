@@ -1,70 +1,124 @@
 <x-admin_layout>
     <x-slot:title>{{ $title }}</x-slot:title>
-    <form>
-        <div class="space-y-12">
-            <div class="border-b border-gray-900/10 pb-12">
 
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div class="sm:col-span-4">
-                        <label for="title" class="block text-sm font-medium leading-6 text-gray-900">Judul
+    <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-4xl lg:py-16">
+            <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Tambahkan Artikel</h2>
+            <form action="{{ route('admin-artikel.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                {{-- <form action="#"> --}}
+                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                    <div class="sm:col-span-2">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Judul
                             Artikel</label>
-                        <div class="mt-2">
-                            <div
-                                class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                                <input type="text" name="title" id="username" autocomplete="username"
-                                    class="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                                    placeholder="Sekar temulawak artikel">
-                            </div>
-                        </div>
+                        <input type="text" name="title" id="title"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Manfaat temulawak" required="">
                     </div>
-
-                    <div class="col-span-full">
-                        <label for="about" class="block text-sm font-medium leading-6 text-gray-900">Isi
-                            artikel</label>
-                        <div class="mt-2">
-                            <textarea id="about" name="about" rows="3"
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
-                        </div>
-                    </div>
-
-
-
-                    <div class="col-span-full">
-                        <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Gambar
-                            Artikel</label>
+                    <div class="col-span-full mt-4">
+                        <label for="gambar" class="block text-sm font-medium leading-6 text-gray-900">Gambar
+                            Produk</label>
                         <div
                             class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                             <div class="text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor"
-                                    aria-hidden="true" data-slot="icon">
-                                    <path fill-rule="evenodd"
-                                        d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
-                                        clip-rule="evenodd" />
-                                </svg>
+                                <img id="image-preview" class="mx-auto h-40 w-auto object-cover mb-4 hidden"
+                                    alt="Preview Gambar" />
                                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
                                     <label for="file-upload"
-                                        class="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500">
-                                        <span>Upload a file</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                        class="relative cursor-pointer rounded-md bg-white font-semibold text-green-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-2 hover:text-primary-500">
+                                        <span>Upload gambar</span>
+                                        <input id="file-upload" name="gambar" type="file" class="sr-only"
+                                            accept="image/*" onchange="previewImage(event)">
+                                        @error('gambar')
+                                            <p class="text-red-600">{{ $message }}</p>
+                                        @enderror
                                     </label>
-                                    <p class="pl-1">or drag and drop</p>
+                                    <p class="pl-1">atau seret dan jatuhkan</p>
                                 </div>
-                                <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
+                                <p class="text-xs leading-5 text-gray-600">PNG or JPG</p>
                             </div>
                         </div>
                     </div>
+
+                    <div>
+                        <label for="kategori"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategori</label>
+
+                        <select id="kategori" name="kategori"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
+                            <option disabled {{ old('kategori') ? '' : 'selected' }}>Pilih kategori</option>
+                            <option value="Kesehatan" {{ old('kategori') == 'Kardus' ? 'selected' : '' }}>Kesehatan
+                            </option>
+                            <option value="Sekar Temulawak" {{ old('kategori') == 'Botol' ? 'selected' : '' }}>Sekar
+                                Temulawak</option>
+                            <option value="Manfaat" {{ old('kategori') == 'Cup' ? 'selected' : '' }}>Manfaat</option>
+                            <option value="Umum" {{ old('kategori') == 'Sachet' ? 'selected' : '' }}>Umum</option>
+                        </select>
+                    </div>
+
+                    <div>
+
+                    </div>
+
                 </div>
-            </div>
+                <div class="w-full my-4">
+                    <label for="body" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Body
+                        Artikel</label>
+                    <textarea id="content" name="body" rows="4"
+                        class="ckeditor block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Write product description here"></textarea>
+                    {{-- <textarea name="content" id="ckeditor" cols="30" rows="10" class="ckeditor"></textarea> --}}
+                </div>
 
+                <button type="button"
+                    class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                    onclick="window.history.back();">
+                    Batal
+                </button>
+                <button type="submit"
+                    class="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                    Tambah Artikel
+                </button>
 
-
-
+            </form>
         </div>
+    </section>
 
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-            <button type="submit"
-                class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-        </div>
-    </form>
+    <script>
+        // Fungsi untuk menampilkan preview gambar
+        function previewImage(event) {
+            const input = event.target;
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
+    <script>
+        CKEDITOR.replace('content', {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token={{ csrf_token() }}',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token={{ csrf_token() }}',
+            clipboard_handleImages: false
+        });
+    </script>
+
+
+    // {{-- <script>
+    //     document.addEventListener('DOMContentLoaded', function() {
+    //         CKEDITOR.replace('content');
+    //     });
+    // </script> --}}
+
 </x-admin_layout>

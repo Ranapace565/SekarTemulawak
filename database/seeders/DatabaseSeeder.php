@@ -34,10 +34,16 @@ class DatabaseSeeder extends Seeder
         //     'remember_token' => Str::random(10)
         // ]);
 
-        $this->call([CategorySeeder::class, UserSeeder::class]);
-        Post::factory(100)->recycle([
-            Category::all(),
-            User::all()
-        ])->create();
+        // $this->call([CategorySeeder::class, UserSeeder::class]);
+        // Post::factory(100)->recycle([
+        //     Category::all(),
+        //     User::all()
+        // ])->create();
+
+        $this->call([
+            // UserSeeder::class,
+            // ProdukSeeder::class,
+            CartSeeder::class,
+        ]);
     }
 }

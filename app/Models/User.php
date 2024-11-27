@@ -19,8 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -45,9 +47,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function posts(): HasMany
+    // Relasi: 1 User memiliki banyak Cart
+    public function carts()
     {
-        return $this->hasMany(Post::class, 'author_id');
+        return $this->hasMany(Cart::class, 'user_id', 'id');
+    }
+    public function pesanans()
+    {
+        return $this->hasMany(Pesanan::class, 'user_id');
     }
 }
