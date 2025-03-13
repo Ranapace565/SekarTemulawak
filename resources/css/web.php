@@ -27,25 +27,13 @@ use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\LandingpageController;
 use App\Http\Controllers\AdminPesananController;
 
-use App\Http\Controllers\Api\ArtikelApiController;
-
 // Route::get('/a', function () {
 //     return view('admin_promosi.daftar_promosi')->with('title', 'Daftar Promosi');
 // });
 
 // Route::get('/b', [DashboardController::class, 'produkChart'])->name('produkChart');
 
-Route::get('/test', function () {
-    return response()->json(['message' => 'API Route Working!']);
-});
 
-Route::prefix('/artikel')->group(function () {
-    Route::get('/', [ArtikelApiController::class, 'index']);  // Semua artikel
-    Route::get('/{slug}', [ArtikelApiController::class, 'show']); // Artikel berdasarkan slug
-    Route::post('/', [ArtikelApiController::class, 'store']); // Tambah artikel
-    Route::post('/update/{slug}', [ArtikelApiController::class, 'update']); // Update artikel
-    Route::delete('/{slug}', [ArtikelApiController::class, 'destroy']); // Hapus artikel
-});
 
 Route::get('/storage-link', function () {
     Artisan::call('storage::link');
